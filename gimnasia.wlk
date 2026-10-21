@@ -80,3 +80,31 @@ class Atleta inherits Persona {
     override method puedeRealizar(rutina) = self.caloriasQueQuemaria(rutina) > 10000 
 
 }
+
+class Club {
+
+    const predios = []
+
+    method predios() = predios
+
+    method elMejorPredioPara(persona) = predios.max({p => p.caloriasQueQuemariaEnElPredio(persona)})
+
+    method prediosTranquisPara(persona) = predios.filter({p => p.esTranquiPara(persona)})
+
+    method rutinasMasExigentesDelClubPara(persona) = predios.map({p => p.rutinaMasExigentePara(persona)})
+
+}
+
+class Predio {
+
+    const rutinas = []
+
+    method rutinas() = rutinas
+
+    method caloriasQueQuemariaEnElPredio(persona) = rutinas.sum({r => persona.caloriasQueQuemaria(r)})
+   
+    method esTranquiPara(persona) = rutinas.any({r => persona.caloriasQueQuemaria(r) < 500})
+
+    method rutinaMasExigentePara(persona) = rutinas.max({r => persona.caloriasQueQuemaria(r)})
+
+}
