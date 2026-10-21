@@ -38,3 +38,45 @@ class RemoDeCompeticion inherits Remo {
     override method descanso(tiempo) = (super(tiempo)-3).max(2)
 
 }
+
+class Persona {
+
+    var property peso = 0
+
+    method puedeRealizar(rutina)
+    method caloriasPorKilo()
+    method tiempoDeEjercicio()
+
+    method caloriasQueQuemaria(rutina) = rutina.caloriasConsumidas(self.tiempoDeEjercicio())
+
+    method pesoPerdido(rutina) = self.caloriasQueQuemaria(rutina) / self.caloriasPorKilo()
+
+    method pesoDespuesDe(rutina) = if (self.puedeRealizar(rutina)) peso - self.pesoPerdido(rutina) else peso
+
+    method aplicar(rutina) { peso = self.pesoDespuesDe(rutina) } 
+
+}
+
+class Sedentaria inherits Persona {
+
+    const property tiempoDeEjercicio
+
+    override method caloriasPorKilo() = 7000 
+
+    override method puedeRealizar(rutina) = peso > 50
+
+    override method tiempoDeEjercicio() = tiempoDeEjercicio
+
+}
+
+class Atleta inherits Persona {
+
+    override method pesoPerdido(rutina) = super(rutina) - 1
+
+    override method caloriasPorKilo() = 8000 
+
+    override method tiempoDeEjercicio() = 90
+
+    override method puedeRealizar(rutina) = self.caloriasQueQuemaria(rutina) > 10000 
+
+}
