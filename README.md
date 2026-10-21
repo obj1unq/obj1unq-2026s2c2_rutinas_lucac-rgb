@@ -38,7 +38,7 @@ Es un tipo especial de Running con la siguiente diferencia:
 ### Remo
 
 - La intensidad es siempre 1.3
-- El descanso se calcula como: tiempo / 5
+- El descanso se calcula como: tiempo / 5 
 
 **Ejemplo:** **remar en el delta** es una actividad de remo 
 - Al practicarse por 5 minutos quemará `100 * (5 - (5 /5)) * 1.3 = 520`
@@ -106,6 +106,7 @@ un kilo menos que el resto de las personas
 - La cantidad de calorias-por-kilo de las personas atletas es 8000
 
 - El tiempo que ejercita una rutina es siempre 90.
+
 
 - Solo realizan una rutina si las calorías que consumiría al realizarla es mayor a 10000
 

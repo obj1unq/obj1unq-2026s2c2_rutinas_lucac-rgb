@@ -1,1 +1,110 @@
-class ABC {}
+class Rutina {
+
+    method caloriasConsumidas(tiempo) = 100 * (tiempo - self.descanso(tiempo)) * self.intensidad()
+
+    method descanso(tiempo)
+    method intensidad()
+
+}
+
+class Running inherits Rutina {
+
+    const intensidadConfigurable
+
+    override method descanso(tiempo) = if(tiempo > 20) 5 else 2
+
+    override method intensidad() = intensidadConfigurable
+
+}
+
+class Maraton inherits Running {
+
+    override method caloriasConsumidas(tiempo) = super(tiempo)*2
+
+}
+
+class Remo inherits Rutina {
+
+    override method intensidad() = 1.3
+
+    override method descanso(tiempo) = tiempo/5
+
+}
+
+class RemoDeCompeticion inherits Remo {
+
+    override method intensidad() = 1.7
+
+    override method descanso(tiempo) = (super(tiempo)-3).max(2)
+
+}
+
+class Persona {
+
+    var property peso = 0
+
+    method puedeRealizar(rutina)
+    method caloriasPorKilo()
+    method tiempoDeEjercicio()
+
+    method caloriasQueQuemaria(rutina) = rutina.caloriasConsumidas(self.tiempoDeEjercicio())
+
+    method pesoPerdido(rutina) = self.caloriasQueQuemaria(rutina) / self.caloriasPorKilo()
+
+    method pesoDespuesDe(rutina) = if (self.puedeRealizar(rutina)) peso - self.pesoPerdido(rutina) else peso
+
+    method aplicar(rutina) { peso = self.pesoDespuesDe(rutina) } 
+
+}
+
+class Sedentaria inherits Persona {
+
+    const property tiempoDeEjercicio
+
+    override method caloriasPorKilo() = 7000 
+
+    override method puedeRealizar(rutina) = peso > 50
+
+    override method tiempoDeEjercicio() = tiempoDeEjercicio
+
+}
+
+class Atleta inherits Persona {
+
+    override method pesoPerdido(rutina) = super(rutina) - 1
+
+    override method caloriasPorKilo() = 8000 
+
+    override method tiempoDeEjercicio() = 90
+
+    override method puedeRealizar(rutina) = self.caloriasQueQuemaria(rutina) > 10000 
+
+}
+
+class Club {
+
+    const predios = []
+
+    method predios() = predios
+
+    method elMejorPredioPara(persona) = predios.max({p => p.caloriasQueQuemariaEnElPredio(persona)})
+
+    method prediosTranquisPara(persona) = predios.filter({p => p.esTranquiPara(persona)})
+
+    method rutinasMasExigentesDelClubPara(persona) = predios.map({p => p.rutinaMasExigentePara(persona)})
+
+}
+
+class Predio {
+
+    const rutinas = []
+
+    method rutinas() = rutinas
+
+    method caloriasQueQuemariaEnElPredio(persona) = rutinas.sum({r => persona.caloriasQueQuemaria(r)})
+   
+    method esTranquiPara(persona) = rutinas.any({r => persona.caloriasQueQuemaria(r) < 500})
+
+    method rutinaMasExigentePara(persona) = rutinas.max({r => persona.caloriasQueQuemaria(r)})
+
+}
